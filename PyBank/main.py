@@ -1,56 +1,179 @@
-# This my PyBank file
-# Modules
+#%%
+
+# PyBank
+
 import os
+
 import csv
 
-# Set path for file
-csvpath = os.path.join(".", "Resources", "budget_data.csv")
+# Files to load and output (Remember to change these)
 
-print(csvpath)
+file_to_load = os.path.join("Resources", "budget_data.csv")
 
-# create variables
-Total_months = 0
-Net_total = 0
+file_to_output = os.path.join("analysis", "budget_analysis.txt")
+
+ 
+
+# Declare Variables:
+
+changes_by_month = []
+
+list_of_months = []
+
+number_of_months = 0
+
+profit_losses = 0
+
+greatest_decrease = 0
+
+greatest_increase = 0
+
+greatest_increase_month = 0
+
+greatest_decrease_month = 0
+
+ 
+
+# Read the csv and convert it into a list of dictionaries
+
+with open(file_to_load) as budget_data:
+
+   reader = csv.reader(budget_data)
+
+   # Read the header
+
+   header = next(reader)
+
+   # For each row...
+
+   for row in reader:
+
+ 
+
+ 
+
+ 
+
+    # Setting variables for rows and calculating number
+
+    previous_row = int(row[1])
+
+    number_of_months += 1
+
+    profit_losses += int(row[1])
+
+    greatest_increase = int(row[1])
+
+    greatest_increase_month = row[0]
+
+ 
+
+    for row in reader:
+
+           # Run the loader animation
+
+ 
+
+         # Number of months:     
+
+         number_of_months += 1
+
+         # Determine profit and losses:
+
+         profit_losses += int(row[1])
+
+ 
+
+    # Difference between current month and previous month:
+
+ 
+
+    Difference_between_months = int(row[1]) - previous_row
+
+    changes_by_month.append(Difference_between_months)
+
+    previous_row = int(row[1])
+
+    list_of_months.append(row[0])
+
+ 
+
+    # Determining the Greatest Increase:
+
+    if int(row[1]) > greatest_increase:
+
+        greatest_increase = int(row[1])
+
+        greatest_increase_month = row[0]
+
+ 
+
+     # Determining the Greatest Decrease:
+
+    if int(row[1]) < greatest_decrease:
+
+        greatest_decrease = int(row[1])
+
+        greatest_decrease_month = row[0]  
+
+ 
+
+    # Determining the Average:
+
+    average_change = sum(changes_by_month)/ len(changes_by_month)
+
+ 
+
+    decrease = min(changes_by_month)
+
+    increase = max(changes_by_month)
+
+ 
+
+ 
+
+# Print Analysis
+
+ 
+
+# Print Analysis
+
+ 
+
+financial_analysis = (f'''Financial Analysis"
+
+---------------------------
+
+Total Months: {number_of_months}
+
+Total: ${profit_losses}
+
+Average Change: ${average_change:.2f}")
+
+Greatest Increase in Profits:, {greatest_increase_month}, (${increase})")
+
+Greatest Decrease in Profits:, {greatest_decrease_month}, (${decrease})''')
+
+ 
+
+#Print out analysis
+
+print(financial_analysis)
+
+ 
+
+#Create a .txt file containing the same analysis in the print out
+
+analysis = open('financial_analysis.txt', 'w')
+
+ 
+
+analysis.write(financial_analysis)
+
+ 
+
+analysis.close()
 
 
-# ----------
-# open csv files
-# Open the CSV
-with open(csvpath) as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=",")
 
-    # Read Header
-     # Read the header row first (skip this step if there is now header)
-    csv_header = next(csvreader)
-    print(f"CSV Header: {csv_header}")
-
-    # Read through each row
-    for row in csvreader:
-        print(row)
-
-        # Months +1
-        Total_months += 1
-
-        # Net Total + second;
-        Net_total += int (row[1])
-
-# output
-# create a variable called output
-output = (
-    f"financial Analysis\n"
-    f"--------------------\n"
-    f"Total Months: {Total_months} \n"
-    f"Total: {Net_total}  \n" 
-    f"Average Change:  \n"
-    f"Greatest Increase in Profits:  \n"
-    f"Greates Decrease in Profits:  \n"
-)
-
-print(output)
-
-# Export a text file
-output_path = os.path.join(".", "Analysis", "budget_Analysis.txt")
-
-with open(output_path, "w") as txt_file:
-    txt_file.write(output)
  
